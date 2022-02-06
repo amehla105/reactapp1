@@ -1,19 +1,19 @@
 import React from "react";
 import axios from "axios";
-
+import base_url from "../api";
 export default class Viewcourse extends React.Component {
   state = {
     courses: [],
     id: "",
     title: "",
-    description: "",
+    description: ""
   };
 
   componentDidMount() {
     this.getdataHandler();
   }
   getdataHandler() {
-    axios.get(`http://65.0.178.92:8080/course/findallcourses`).then((res) => {
+    axios.get(`${base_url}/course/findallcourses`).then((res) => {
       const courses = res.data;
 
       this.setState({ courses });
@@ -22,7 +22,7 @@ export default class Viewcourse extends React.Component {
 
   deleteHandler = (courseid) => {
     axios
-      .delete(`http://65.0.178.92:8080/course/deletebycourseid/${courseid}`)
+      .delete(`${base_url}/course/deletebycourseid/${courseid}`)
       .then((res) => {
         this.getdataHandler();
       });
@@ -31,33 +31,28 @@ export default class Viewcourse extends React.Component {
     this.setState({
       id: "",
       title: "",
-      description: "",
+      description: ""
     });
   }
   editHandler = (courseid) => {
-    axios
-      .get(`http://65.0.178.92:8080/course/findbycourseid/${courseid}`)
-      .then((res) => {
-        const courses = res.data;
-        console.log(courses);
-        this.setState({
-          id: courses.courseId,
-          title: courses.title,
-          description: courses.description,
-        });
+    axios.get(`${base_url}/course/findbycourseid/${courseid}`).then((res) => {
+      const courses = res.data;
+      console.log(courses);
+      this.setState({
+        id: courses.courseId,
+        title: courses.title,
+        description: courses.description
       });
+    });
   };
   updateHandler = () => {
     const updatecourse = {
       id: this.state.id,
       title: this.state.title,
-      description: this.state.description,
+      description: this.state.description
     };
     axios
-      .put(
-        `http://65.0.178.92:8080/course/updatecoursebyid/${this.state.id}`,
-        updatecourse
-      )
+      .put(`${base_url}/course/updatecoursebyid/${this.state.id}`, updatecourse)
       .then((res) => {
         this.getdataHandler();
         this.clearFeilds();

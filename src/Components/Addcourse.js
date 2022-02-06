@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import base_url from "../api";
 export default class Addcourse extends React.Component {
   state = {
     title: "",
     description: "",
-    success: false,
+    success: false
   };
 
   titleChange = (event) => {
@@ -19,21 +19,19 @@ export default class Addcourse extends React.Component {
   clearFeilds() {
     this.setState({
       title: "",
-      description: "",
+      description: ""
     });
   }
 
   addCourse = () => {
     const savecourse = {
       title: this.state.title,
-      description: this.state.description,
+      description: this.state.description
     };
 
-    axios
-      .post("http://65.0.178.92:8080/course/savecourse", savecourse)
-      .then((response) => {
-        this.clearFeilds();
-      });
+    axios.post(`${base_url}/course/savecourse`, savecourse).then((response) => {
+      this.clearFeilds();
+    });
     this.setState({ success: true });
   };
 
